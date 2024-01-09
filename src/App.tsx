@@ -26,8 +26,22 @@ import Tooltip from "react-bootstrap/Tooltip";
 // modals
 import { SendToManagerModal, ThankYouModal, ErrorModal } from "./modals";
 
+// animations
+import { CSSTransition } from "react-transition-group";
+
 function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const nodeRef = useRef();
+
+  const vibrateLogo = () => {
+    // @ts-ignore
+    const logo = nodeRef.current.querySelector("#zc-mobile-menu-logo");
+    logo.classList.add("zc-vibrate");
+    // setTimeout(() => {
+    //   logo.classList.remove("zc-vibrate");
+    // }, 1000);
+  };
 
   return (
     <>
@@ -75,20 +89,20 @@ function App() {
       </div>
       <div className="zc-footer">
         <div className="zc-footer__container">
-          <div className="zc-footer__empty-container"></div>
+          {/* <div className="zc-footer__empty-container"></div> */}
           <ul className="zc-footer__contacts">
             <li>
-              <a>
+              <a href="https://t.me/ZuZu_Master" target="_blank">
                 <FaTelegramPlane size="26" color="#555" className="contact-telegram" />
               </a>
             </li>
             <li>
-              <a>
+              <a href="https://wa.me/+79851648300" target="_blank">
                 <IoLogoWhatsapp size="26" color="#555" className="contact-whatsapp" />
               </a>
             </li>
             <li>
-              <a>
+              <a href="https://www.youtube.com/@zuzumaster336" target="_blank">
                 <FaYoutube size="26" color="#555" className="contact-youtube" />
               </a>
             </li>
@@ -98,13 +112,22 @@ function App() {
           </div>
         </div>
       </div>
-      {mobileMenuOpen && (
-        <div className="mobile-menu">
+      <CSSTransition
+        in={mobileMenuOpen}
+        nodeRef={nodeRef}
+        timeout={300}
+        classNames="zc-mob-menu"
+        unmountOnExit
+        onEnter={() => vibrateLogo()}
+        // onExited={() => setShowButton(true)}
+      >
+        {/* @ts-ignore */}
+        <div className="mobile-menu" ref={nodeRef}>
           <IoCloseOutline size="35" className="close-menu" onClick={() => setMobileMenuOpen(false)} />
           <div className="mobile-menu__grid-container">
             <div className="mobile-menu__content">
               <a href="https://zuzumaster.ru/" style={{ textAlign: "center" }}>
-                <Logo width="70" height="120" fill="white" />
+                <Logo width="70" height="120" fill="white" id="zc-mobile-menu-logo" />
               </a>
               <span>
                 Фрезерная резка на ЧПУ в Москве
@@ -114,17 +137,17 @@ function App() {
               <ul>
                 <span style={{ fontWeight: "500" }}>Контакты:</span>
                 <li style={{ fontWeight: "500" }}>
-                  <a href="tel:+74951083820" style={{ color: "white" }}>
+                  <a href="tel:+74951083820" style={{ color: "white", textDecoration: "underline" }}>
                     +7 (495) 108-38-20
                   </a>
                 </li>
                 <li style={{ fontWeight: "500" }}>
-                  <a href="tel:+79851648300" style={{ color: "white" }}>
+                  <a href="tel:+79851648300" style={{ color: "white", textDecoration: "underline" }}>
                     +7 (985) 164-83-00
                   </a>
                 </li>
                 <li style={{ fontWeight: "500" }}>
-                  <a href="mailto:zakaz@zuzumaster.ru" style={{ color: "white" }}>
+                  <a href="mailto:zakaz@zuzumaster.ru" style={{ color: "white", textDecoration: "underline" }}>
                     zakaz@zuzumaster.ru
                   </a>
                 </li>
@@ -143,7 +166,7 @@ function App() {
             </div>
           </div>
         </div>
-      )}
+      </CSSTransition>
     </>
   );
 }
@@ -475,7 +498,7 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
         )}
       </Overlay>
       <Row className="align-items-center">
-        <Form.Group as={Col} lg="4" className="mb-2 mb-md-3 material-input-group">
+        <Form.Group as={Col} xs="12" sm="12" md="4" className="mb-2 mb-md-3 material-input-group">
           <Form.Label className="mb-0">Материал:</Form.Label>
           <Form.Select
             value={material}
@@ -502,7 +525,7 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
             ))}
           </Form.Select>
         </Form.Group>
-        <Form.Group as={Col} lg="3" className="mb-2 mb-md-3 thickness-input-group">
+        <Form.Group as={Col} xs="6" sm="12" md="3" className="mb-2 mb-md-3 thickness-input-group">
           <Form.Label className="mb-0">Толщина, мм:</Form.Label>
           <Form.Control
             type="number"
@@ -513,16 +536,20 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
             onChange={onThicknessChange}
           />
         </Form.Group>
-        <Form.Group as={Col} lg="3" className="mb-2 mb-md-3 length-input-group">
+        <Form.Group as={Col} xs="6" sm="12" md="3" className="mb-2 mb-md-3 length-input-group">
           <Form.Label className="mb-0">Длина, мм:</Form.Label>
           <Form.Control type="number" value={length} min="0" onChange={onLengthChange} />
         </Form.Group>
-        <Form.Group as={Col} lg="2" className="mb-2 mb-md-3 quantity-input-group">
-          <Form.Label className="mb-0">Кол-во заготовок:</Form.Label>
+        <Form.Group as={Col} xs="6" sm="12" md="2" className="mb-2 mb-md-3 quantity-input-group">
+          <Form.Label className="mb-0">Кол-во:</Form.Label>
           <Form.Control type="number" value={quantity} min="0" onChange={onQuantityChange} />
         </Form.Group>
+
+        <Form.Group as={Col} xs="6" sm="12" md="3" className="own-material-input-group">
+          {/* <Form.Label className="mb-0"></Form.Label> */}
+          <Form.Check type="checkbox" label="Наш материал" />
+        </Form.Group>
       </Row>
-      <Form.Check type="checkbox" label="Наш материал" className="mb-3" />
       <div className="zc-form-row__totals">
         <span>
           Цена за метр:
