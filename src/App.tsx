@@ -104,7 +104,7 @@ function App() {
       <div className="zc-content">
         <Calc showToast={showToast} />
         <div className="feedback-text">
-          <span>Столкнулись с проблеммой или нашли ошибку? Свяжитесь с нами - и мы обязательно поможем!</span>
+          <span>Столкнулись с проблемой или нашли ошибку? Свяжитесь с нами - и мы обязательно поможем!</span>
         </div>
       </div>
       <div className="zc-footer">
