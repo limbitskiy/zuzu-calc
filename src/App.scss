@@ -31,6 +31,24 @@
   }
 }
 
+.p-toast {
+  @media (max-width: 600px) {
+    width: auto;
+    left: 20px;
+    .p-toast-message-content {
+      padding: 0.5rem;
+    }
+
+    .p-toast-icon-close {
+      display: none;
+    }
+
+    .p-toast-message {
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
 // header desktop
 .zc-header {
   height: var(--header-height);

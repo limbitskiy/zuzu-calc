@@ -23,6 +23,11 @@ import Spinner from "react-bootstrap/Spinner";
 import Overlay from "react-bootstrap/Overlay";
 import Tooltip from "react-bootstrap/Tooltip";
 
+// primereact
+import { PrimeReactProvider } from "primereact/api";
+import "primereact/resources/themes/lara-light-cyan/theme.css";
+import { Toast } from "primereact/toast";
+
 // modals
 import { SendToManagerModal, ThankYouModal, ErrorModal } from "./modals";
 
@@ -33,18 +38,33 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const nodeRef = useRef();
+  const toast = useRef(null);
 
   const vibrateLogo = () => {
     // @ts-ignore
     const logo = nodeRef.current.querySelector("#zc-mobile-menu-logo");
     logo.classList.add("zc-vibrate");
-    // setTimeout(() => {
-    //   logo.classList.remove("zc-vibrate");
-    // }, 1000);
+    setTimeout(() => {
+      logo.classList.remove("zc-vibrate");
+    }, 1000);
+  };
+
+  const showToast = ({ message, severity }: { message: string; severity: string }) => {
+    // @ts-ignore
+    toast.current.show({
+      severity,
+      content: () => (
+        <div className="flex flex-column align-items-left" style={{ flex: "1" }}>
+          <span>{message}</span>
+        </div>
+      ),
+    });
   };
 
   return (
-    <>
+    <PrimeReactProvider>
+      {/* @ts-ignore */}
+      <Toast ref={toast} />
       <div className="zc-header" style={{ background: `url(${Bg})` }}>
         <div className="zc-header__container">
           <div className="zc-header__logo-and-desc">
@@ -82,7 +102,7 @@ function App() {
         <AiOutlineMenu color="white" size="25" onClick={() => setMobileMenuOpen(true)} />
       </div>
       <div className="zc-content">
-        <Calc />
+        <Calc showToast={showToast} />
         <div className="feedback-text">
           <span>Столкнулись с проблеммой или нашли ошибку? Свяжитесь с нами - и мы обязательно поможем!</span>
         </div>
@@ -167,13 +187,13 @@ function App() {
           </div>
         </div>
       </CSSTransition>
-    </>
+    </PrimeReactProvider>
   );
 }
 
 export default App;
-
-function Calc() {
+// @ts-ignore
+function Calc({ showToast }) {
   const [data, setData] = useState();
   const [total, setTotal] = useState(0);
   const [rows, setRows] = useState([{ id: 1, partData: {} }]);
@@ -212,6 +232,7 @@ function Calc() {
       }
       return filtered;
     });
+    showToast({ message: `Деталь #${id} удалена`, severity: `error` });
   };
 
   const addRow = () => {
@@ -219,6 +240,7 @@ function Calc() {
     setPartCounter(id);
     setRows((rows) => [...rows, { id, partData: {} }]);
     setOpenAccordionTabs((prev) => [...prev, id + ""]);
+    showToast({ message: `Деталь #${id} добавлена`, severity: `success` });
   };
 
   const resetCalc = () => {
@@ -258,6 +280,10 @@ function Calc() {
       setErrorText(
         "Некоторые поля введены с ошибками, или поля не заполнены. Проверьте, пожалуйста, данные перед отправкой."
       );
+      setShowErrorModal(true);
+      // if no orders
+    } else if (!rows.length) {
+      setErrorText("У вас нету заказов.");
       setShowErrorModal(true);
     } else {
       setShowManagerModal(true);
