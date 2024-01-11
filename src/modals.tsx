@@ -1,6 +1,9 @@
 // react
 import { useState, useEffect } from "react";
 
+// axios
+import axios from "axios";
+
 // bootstrap components
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
@@ -74,6 +77,26 @@ export function SendToManagerModal({
       onHide();
       setShowThankyouModal();
       resetValues();
+      axios.post(`http://localhost:3001/send-mail`, {
+        order: Object.values(data).map((item) => {
+          return {
+            // @ts-ignore
+            material: materialNames[item.partData.material],
+            // @ts-ignore
+            thickness: item.partData.thickness,
+            // @ts-ignore
+            length: item.partData.length,
+            // @ts-ignore
+            quantity: item.partData.quantity,
+            // @ts-ignore
+            price: item.partData.price,
+          };
+        }),
+        customer: {
+          name,
+          contact,
+        },
+      });
     } else {
       if (!name && !contact) {
         setErrorText(`Введите, пожалуйста, контактную информацию`);

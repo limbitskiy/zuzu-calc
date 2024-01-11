@@ -5,6 +5,7 @@
     "bad": 2606,
     "critical": 1972
   },
+  "quantityConstant": 652,
   "materialLengthMap": [
     {
       "maxLength": 500,

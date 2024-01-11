@@ -232,7 +232,7 @@ function Calc({ showToast }) {
       }
       return filtered;
     });
-    showToast({ message: `Деталь #${id} удалена`, severity: `error` });
+    showToast({ message: `Материал ${id} удален`, severity: `error` });
   };
 
   const addRow = () => {
@@ -240,7 +240,7 @@ function Calc({ showToast }) {
     setPartCounter(id);
     setRows((rows) => [...rows, { id, partData: {} }]);
     setOpenAccordionTabs((prev) => [...prev, id + ""]);
-    showToast({ message: `Деталь #${id} добавлена`, severity: `success` });
+    showToast({ message: `Материал ${id} добавлен`, severity: `success` });
   };
 
   const resetCalc = () => {
@@ -326,7 +326,7 @@ function Calc({ showToast }) {
             {rows.map((row) => (
               <Accordion.Item eventKey={row.id + ""} key={row.id}>
                 <Accordion.Header>
-                  <span>Деталь #{row.id}</span>
+                  <span>Материал {row.id}</span>
                   <span className="deleteRow-btn" onClick={() => removeRow(row.id)}>
                     Удалить
                   </span>
@@ -347,7 +347,10 @@ function Calc({ showToast }) {
           <Button variant="outline-success" onClick={addRow} className="me-3">
             <FaPlus size="18" style={{ marginBottom: "1px" }} />
           </Button>{" "}
-          <span style={{ fontWeight: "600", fontSize: "18px" }}>Общая стоимость: {total}₽</span>
+          <div className="zc-footer__total-box">
+            <span style={{ fontWeight: "600", fontSize: "16px" }}>Общая стоимость: {total}₽</span>
+            <span style={{ fontSize: "13px" }}>* Финальная стоимость уточняется менеджером</span>
+          </div>
         </div>
         <Button variant="success" className="send-to-manager-btn" onClick={onSendToMangerBtnClick}>
           Отправить менеджеру
@@ -452,7 +455,8 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
 
   useEffect(() => {
     if (meterPrice && length && quantity) {
-      const _price = Math.round(meterPrice * length * quantity);
+      // @ts-ignore
+      const _price = Math.round(meterPrice * length + quantity * data.quantityConstant);
       setPrice(_price);
       setPartData({
         material,
@@ -567,14 +571,13 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
           <Form.Control type="number" value={length} min="0" onChange={onLengthChange} />
         </Form.Group>
         <Form.Group as={Col} xs="6" sm="12" md="2" className="mb-2 mb-md-3 quantity-input-group">
-          <Form.Label className="mb-0">Кол-во:</Form.Label>
+          <Form.Label className="mb-0">Кол-во заготовок:</Form.Label>
           <Form.Control type="number" value={quantity} min="0" onChange={onQuantityChange} />
         </Form.Group>
 
-        <Form.Group as={Col} xs="6" sm="12" md="3" className="own-material-input-group">
-          {/* <Form.Label className="mb-0"></Form.Label> */}
+        {/* <Form.Group as={Col} xs="6" sm="12" md="3" className="own-material-input-group">
           <Form.Check type="checkbox" label="Наш материал" />
-        </Form.Group>
+        </Form.Group> */}
       </Row>
       <div className="zc-form-row__totals">
         <span>
@@ -582,7 +585,7 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
           <span style={{ fontWeight: "600" }}>&nbsp;{Math.round(meterPrice)}₽</span>
         </span>
         <span>
-          Цена за деталь:
+          Цена за материал:
           <span style={{ fontWeight: "600" }}>&nbsp;{price}₽ </span>
         </span>
       </div>
