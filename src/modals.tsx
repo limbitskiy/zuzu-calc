@@ -77,26 +77,37 @@ export function SendToManagerModal({
       onHide();
       setShowThankyouModal();
       resetValues();
-      axios.post(`http://localhost:3001/send-mail`, {
-        order: Object.values(data).map((item) => {
-          return {
-            // @ts-ignore
-            material: materialNames[item.partData.material],
-            // @ts-ignore
-            thickness: item.partData.thickness,
-            // @ts-ignore
-            length: item.partData.length,
-            // @ts-ignore
-            quantity: item.partData.quantity,
-            // @ts-ignore
-            price: item.partData.price,
-          };
-        }),
-        customer: {
-          name,
-          contact,
-        },
-      });
+      axios
+        .post(
+          `/mail.php`,
+          {
+            order: Object.values(data).map((item) => {
+              return {
+                // @ts-ignore
+                material: materialNames[item.partData.material],
+                // @ts-ignore
+                thickness: item.partData.thickness,
+                // @ts-ignore
+                length: item.partData.length,
+                // @ts-ignore
+                quantity: item.partData.quantity,
+                // @ts-ignore
+                price: item.partData.price,
+              };
+            }),
+            customer: {
+              name,
+              contact,
+            },
+          },
+          {
+            headers: {
+              "Content-Type": "application/json;charset=UTF-8",
+              "Access-Control-Allow-Origin": "*",
+            },
+          }
+        )
+        .then((res) => console.log(res.data));
     } else {
       if (!name && !contact) {
         setErrorText(`Введите, пожалуйста, контактную информацию`);
