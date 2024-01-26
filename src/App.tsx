@@ -109,7 +109,6 @@ function App() {
       </div>
       <div className="zc-footer">
         <div className="zc-footer__container">
-          {/* <div className="zc-footer__empty-container"></div> */}
           <ul className="zc-footer__contacts">
             <li>
               <a href="https://t.me/ZuZu_Master" target="_blank">
@@ -191,7 +190,6 @@ function App() {
   );
 }
 
-export default App;
 // @ts-ignore
 function Calc({ showToast }) {
   const [data, setData] = useState();
@@ -291,7 +289,7 @@ function Calc({ showToast }) {
   };
 
   return (
-    <div className="zc-form">
+    <div className="zc-form" data-testid="zc-form">
       <SendToManagerModal
         show={showManagerModal}
         // @ts-ignore
@@ -327,7 +325,7 @@ function Calc({ showToast }) {
               <Accordion.Item eventKey={row.id + ""} key={row.id}>
                 <Accordion.Header>
                   <span>Материал {row.id}</span>
-                  <span className="deleteRow-btn" onClick={() => removeRow(row.id)}>
+                  <span className="deleteRow-btn" data-testid="remove-material-btn" onClick={() => removeRow(row.id)}>
                     Удалить
                   </span>
                 </Accordion.Header>
@@ -344,7 +342,12 @@ function Calc({ showToast }) {
       </div>
       <div className="zc-form__footer">
         <div className="zc-form__footer-left">
-          <Button variant="outline-success" onClick={addRow} className="me-3">
+          <Button
+            variant="outline-success"
+            onClick={addRow}
+            className="me-3 add-material-btn"
+            data-testid="add-material-btn"
+          >
             <FaPlus size="18" style={{ marginBottom: "1px" }} />
           </Button>{" "}
           <div className="zc-footer__total-box">
@@ -592,3 +595,5 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
     </div>
   );
 }
+
+export default App;
