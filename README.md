@@ -1,5 +1,9 @@
 # Material and work cost calculator for zuzumaster.ru
 
-Small calc app written on react + typescript
+Stack:
 
-See on prod: [https://calc.zuzumaster.ru/](https://calc.zuzumaster.ru/)
+- react
+- TS
+- bootstrap UI
+
+> See on prod: [calc.zuzumaster.ru/](https://calc.zuzumaster.ru/)
