@@ -107,6 +107,17 @@
   background-color: var(--accent-color);
   height: var(--header-mobile-height);
 
+  .header-mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+  }
+
+  .header-mobile-tel {
+    color: white;
+  }
+
   @media (min-width: 935px) {
     display: none;
   }
@@ -227,7 +238,7 @@
 
 .zc-form__rows {
   padding: 1rem;
-  max-height: calc(100dvh - 200px - var(--header-mobile-height) - var(--footer-height));
+  max-height: calc(100dvh - 237px - var(--header-mobile-height) - var(--footer-height));
   overflow-y: auto;
 
   .accordion-item {
@@ -247,11 +258,11 @@
     .deleteRow-btn {
       display: block;
       padding: 0.5rem 1rem;
-      background: var(--accent-color);
+      border: 1px solid var(--accent-color);
       position: absolute;
       right: 3.5rem;
       border-radius: 5px;
-      color: white;
+      color: var(--accent-color);
 
       @media (max-width: 600px) {
         padding: 0.4rem 0.9rem;
@@ -272,7 +283,12 @@
   }
 
   @media (max-width: 600px) {
-    max-height: calc(100dvh - 87px - var(--header-height) - var(--footer-height));
+    max-height: calc(100dvh - 118px - var(--header-height) - var(--footer-height));
+    padding: 0;
+  }
+
+  @media (max-width: 341px) {
+    max-height: calc(100dvh - 138px - var(--header-height) - var(--footer-height));
     padding: 0;
   }
 }
@@ -295,6 +311,11 @@
 
     @media (max-width: 575px) {
       margin-top: 0.4rem;
+    }
+  }
+  .thickness-input-group {
+    @media (max-width: 365px) {
+      margin-top: 1.55rem;
     }
   }
 
@@ -322,9 +343,22 @@
   padding: 1rem;
   background-color: var(--grey-bg);
 
+  .add-material-btn {
+    @media (max-width: 700px) {
+      width: 100%;
+    }
+  }
+
   .zc-form__footer-left {
     display: flex;
     align-items: center;
+    gap: 0.5rem;
+
+    @media (max-width: 700px) {
+      flex-wrap: wrap;
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
   }
 
   .zc-footer__total-box {
@@ -333,7 +367,7 @@
   }
 
   .send-to-manager-btn {
-    @media (max-width: 600px) {
+    @media (max-width: 700px) {
       width: 100%;
       margin-top: 0.5rem;
     }

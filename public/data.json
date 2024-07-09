@@ -5,7 +5,7 @@
     "bad": 2606,
     "critical": 1972
   },
-  "quantityConstant": 652,
+  "quantityConstant": 1000,
   "materialLengthMap": [
     {
       "maxLength": 500,
@@ -24,21 +24,7 @@
     "wood": {
       "cutSpeed": 4000,
       "maxDeepeningForSinglePass": 6,
-      "materials": [
-        "dsp",
-        "fanera",
-        "osb",
-        "xdf",
-        "mdf",
-        "dvp",
-        "furnitureBoard",
-        "tamburat",
-        "slicedVeneer",
-        "lamel",
-        "corrugatedCardboard",
-        "slab",
-        "getinax"
-      ],
+      "materials": ["dsp", "fanera", "osb", "xdf", "mdf", "dvp", "furnitureBoard", "tamburat", "slicedVeneer", "lamel", "corrugatedCardboard", "slab", "getinax"],
       "thicknessToPasses": [
         { "startThickness": 0.1, "passes": 1 },
         { "startThickness": 7, "passes": 2 },
@@ -59,7 +45,8 @@
       "thicknessToPasses": [
         { "startThickness": 0.1, "passes": 1 },
         { "startThickness": 5, "passes": 2 },
-        { "startThickness": 9, "passes": 3 }
+        { "startThickness": 9, "passes": 3 },
+        { "startThickness": 12, "passes": 4 }
       ]
     },
     "composite": {
@@ -75,19 +62,7 @@
     "softPlastic": {
       "cutSpeed": 5000,
       "maxDeepeningForSinglePass": 6,
-      "materials": [
-        "teflon",
-        "ftoroplast",
-        "pvh",
-        "pnd",
-        "pet",
-        "abs",
-        "pvd",
-        "paronite",
-        "ebonite",
-        "gipsokarton",
-        "kaprolon"
-      ],
+      "materials": ["teflon", "ftoroplast", "pvh", "pnd", "pet", "abs", "pvd", "paronite", "ebonite", "gipsokarton", "kaprolon"],
       "thicknessToPasses": [
         { "startThickness": 0.1, "passes": 1 },
         { "startThickness": 7, "passes": 2 },

@@ -134,7 +134,7 @@ export function SendToManagerModal({
   };
 
   return (
-    <Modal show={show} onHide={onHide} backdrop="static" size="lg" centered>
+    <Modal className="details-modal" show={show} onHide={onHide} backdrop="static" size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title>Отправка заказа</Modal.Title>
       </Modal.Header>
@@ -204,7 +204,7 @@ export function ThankYouModal(props) {
 // @ts-ignore
 export function ErrorModal({ show, errorMessage, onHide }) {
   return (
-    <Modal show={show} onHide={onHide} backdrop="static" centered>
+    <Modal className="error-modal" show={show} onHide={onHide} backdrop="static" centered>
       <Modal.Header closeButton>
         <Modal.Title>Ошибка</Modal.Title>
       </Modal.Header>

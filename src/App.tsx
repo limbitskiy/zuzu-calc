@@ -11,7 +11,6 @@ import { FaTelegramPlane, FaYoutube } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { IoCloseOutline } from "react-icons/io5";
 import { AiOutlineMenu } from "react-icons/ai";
-import { FaPlus } from "react-icons/fa6";
 
 // bootstrap components
 import Button from "react-bootstrap/Button";
@@ -99,7 +98,13 @@ function App() {
         <a href="https://zuzumaster.ru/">
           <Logo width="25" height="30" fill="white" />
         </a>
-        <AiOutlineMenu color="white" size="25" onClick={() => setMobileMenuOpen(true)} />
+        <a className="header-mobile-tel" href="tel:+79851648300">
+          +7-985-164-83-00
+        </a>
+        <div className="header-mobile-menu-btn" onClick={() => setMobileMenuOpen(true)}>
+          <span>Меню</span>
+          <AiOutlineMenu color="white" size="25" />
+        </div>
       </div>
       <div className="zc-content">
         <Calc showToast={showToast} />
@@ -172,11 +177,7 @@ function App() {
                 </li>
               </ul>
               <span>
-                <a
-                  target="_blank"
-                  href="https://yandex.ru/maps/-/CDuqNJZQ"
-                  style={{ color: "white", fontWeight: "500", textDecoration: "underline" }}
-                >
+                <a target="_blank" href="https://yandex.ru/maps/-/CDuqNJZQ" style={{ color: "white", fontWeight: "500", textDecoration: "underline" }}>
                   г. Москва, ул. Плеханова, д. 10Ас2
                 </a>
                 <br /> 1.5 км от м. “Шоссе Энтузиастов” <br />
@@ -275,15 +276,15 @@ function Calc({ showToast }) {
     // @ts-ignore
     if (rows.some((row) => !row.partData.valid)) {
       console.error(rows);
-      setErrorText(
-        "Некоторые поля введены с ошибками, или поля не заполнены. Проверьте, пожалуйста, данные перед отправкой."
-      );
+      setErrorText("Некоторые поля введены с ошибками, или поля не заполнены. Проверьте, пожалуйста, данные перед отправкой.");
       setShowErrorModal(true);
       // if no orders
     } else if (!rows.length) {
-      setErrorText("У вас нету заказов.");
+      setErrorText("У вас нет заказов.");
       setShowErrorModal(true);
     } else {
+      console.log(rows);
+
       setShowManagerModal(true);
     }
   };
@@ -337,21 +338,18 @@ function Calc({ showToast }) {
             ))}
           </Accordion>
         ) : (
-          "Нету деталей"
+          "Нет деталей"
         )}
       </div>
       <div className="zc-form__footer">
         <div className="zc-form__footer-left">
-          <Button
-            variant="outline-success"
-            onClick={addRow}
-            className="me-3 add-material-btn"
-            data-testid="add-material-btn"
-          >
-            <FaPlus size="18" style={{ marginBottom: "1px" }} />
+          <Button variant="danger" onClick={addRow} className="add-material-btn" data-testid="add-material-btn">
+            Добавить
           </Button>{" "}
           <div className="zc-footer__total-box">
-            <span style={{ fontWeight: "600", fontSize: "16px" }}>Общая стоимость: {total}₽</span>
+            <span className="total-price" style={{ fontWeight: "600", fontSize: "16px" }}>
+              Общая стоимость: {total}₽
+            </span>
             <span style={{ fontSize: "13px" }}>* Финальная стоимость уточняется менеджером</span>
           </div>
         </div>
@@ -437,10 +435,7 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
         const current = thicknessMap[i];
         const next = thicknessMap[i + 1];
 
-        if (
-          (!next && thickness >= current.startThickness) ||
-          (thickness >= current.startThickness && thickness < next?.startThickness)
-        ) {
+        if ((!next && thickness >= current.startThickness) || (thickness >= current.startThickness && thickness < next?.startThickness)) {
           setPasses(current.passes);
           break;
         }
@@ -459,12 +454,13 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
   useEffect(() => {
     if (meterPrice && length && quantity) {
       // @ts-ignore
-      const _price = Math.round(meterPrice * length + quantity * data.quantityConstant);
+      const _price = Math.round(Math.round(meterPrice) * length + quantity * data.quantityConstant);
+
       setPrice(_price);
       setPartData({
         material,
-        thickness,
-        length,
+        thickness: +thickness,
+        length: +length,
         quantity,
         price: _price,
         valid: !isThicknessInvalid,
@@ -531,14 +527,9 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
         )}
       </Overlay>
       <Row className="align-items-center">
-        <Form.Group as={Col} xs="12" sm="12" md="4" className="mb-2 mb-md-3 material-input-group">
+        <Form.Group as={Col} xs="12" sm="12" md="12" lg="6" className="mb-2 mb-md-3 material-input-group">
           <Form.Label className="mb-0">Материал:</Form.Label>
-          <Form.Select
-            value={material}
-            style={{ cursor: "pointer" }}
-            onChange={(e) => setMaterial(e.target.value)}
-            className="material-select"
-          >
+          <Form.Select value={material} style={{ cursor: "pointer" }} onChange={(e) => setMaterial(e.target.value)} className="material-select">
             <option disabled value="placeholder">
               Выберите
             </option>
@@ -558,24 +549,17 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
             ))}
           </Form.Select>
         </Form.Group>
-        <Form.Group as={Col} xs="6" sm="12" md="3" className="mb-2 mb-md-3 thickness-input-group">
+        <Form.Group as={Col} xs="6" sm="12" md="12" lg="3" className="mb-2 mb-md-3 thickness-input-group">
           <Form.Label className="mb-0">Толщина, мм:</Form.Label>
-          <Form.Control
-            type="number"
-            value={thickness}
-            min="0"
-            ref={thicknessInput}
-            isInvalid={isThicknessInvalid}
-            onChange={onThicknessChange}
-          />
+          <Form.Control type="number" value={thickness} min="1" ref={thicknessInput} isInvalid={isThicknessInvalid} onChange={onThicknessChange} className="thickness-input" />
         </Form.Group>
-        <Form.Group as={Col} xs="6" sm="12" md="3" className="mb-2 mb-md-3 length-input-group">
-          <Form.Label className="mb-0">Длина, мм:</Form.Label>
-          <Form.Control type="number" value={length} min="0" onChange={onLengthChange} />
+        <Form.Group as={Col} xs="6" sm="12" md="12" lg="3" className="mb-2 mb-md-3 length-input-group">
+          <Form.Label className="mb-0">Длина вектора, мм:</Form.Label>
+          <Form.Control type="number" value={length} min="1" onChange={onLengthChange} className="length-input" />
         </Form.Group>
-        <Form.Group as={Col} xs="6" sm="12" md="2" className="mb-2 mb-md-3 quantity-input-group">
-          <Form.Label className="mb-0">Кол-во заготовок:</Form.Label>
-          <Form.Control type="number" value={quantity} min="0" onChange={onQuantityChange} />
+        <Form.Group as={Col} xs="6" sm="12" md="12" lg="4" className="mb-2 mb-md-3 quantity-input-group">
+          <Form.Label className="mb-0">Кол-во листов (заготовок), шт:</Form.Label>
+          <Form.Control type="number" value={quantity} min="1" onChange={onQuantityChange} className="quantity-input" />
         </Form.Group>
 
         {/* <Form.Group as={Col} xs="6" sm="12" md="3" className="own-material-input-group">
@@ -584,12 +568,16 @@ function CalcRow({ data, setPartData }: { data: { materialGroups: {}; materialLe
       </Row>
       <div className="zc-form-row__totals">
         <span>
-          Цена за метр:
-          <span style={{ fontWeight: "600" }}>&nbsp;{Math.round(meterPrice)}₽</span>
+          Цена за метр реза:
+          <span className="meter-price" style={{ fontWeight: "600" }}>
+            &nbsp;{Math.round(meterPrice)}₽
+          </span>
         </span>
         <span>
-          Цена за материал:
-          <span style={{ fontWeight: "600" }}>&nbsp;{price}₽ </span>
+          Стоимость:
+          <span className="material-price" style={{ fontWeight: "600" }}>
+            &nbsp;{price}₽{" "}
+          </span>
         </span>
       </div>
     </div>
