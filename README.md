@@ -7,6 +7,7 @@ Stack:
 - react
 - react-bootstrap
 - TS
+- vitest
 
 Screenshots:
 ![screenshot 1](/screenshots/1.png)
