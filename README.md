@@ -1,9 +1,12 @@
 # Material and work cost calculator for zuzumaster.ru
 
+[calc.zuzumaster.ru/](https://calc.zuzumaster.ru/)
+
 Stack:
 
 - react
+- react-bootstrap
 - TS
-- bootstrap UI
 
-> See on prod: [calc.zuzumaster.ru/](https://calc.zuzumaster.ru/)
+Screenshots:
+![screenshot 1](/screenshots/1.png)
